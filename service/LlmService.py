@@ -1,16 +1,16 @@
 import backoff
 import openai
 
-from llm import IndexBuilder
+from loaders.DocumentLoader import DocumentLoader
 
 
 class LlmService:
     def __init__(self):
-        self.index_builder = IndexBuilder.IndexBuilder()
+        self.document_loader = DocumentLoader()
 
     @backoff.on_exception(backoff.expo, openai.RateLimitError, max_tries=2)
     def handle_input(self, input_request):
-        index = self.index_builder.index
+        index = self.document_loader.index
 
         # query_engine = index.as_query_engine(streaming=False)
         query_engine = index.as_chat_engine()

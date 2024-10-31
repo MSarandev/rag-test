@@ -1,10 +1,9 @@
-from typing import Union
-
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import HTMLResponse, FileResponse
-from service import LlmService
 from dto import ChatQuestion
+
+from service import LlmService
 
 origins = [
     "http://localhost:8000/*",
@@ -26,7 +25,7 @@ llm_service = LlmService.LlmService()
 
 @app.get("/", response_class=HTMLResponse)
 async def get_home_page():
-    return FileResponse("html/index.html")
+    return FileResponse("static/index.html")
 
 
 @app.post("/query")
