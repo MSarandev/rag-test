@@ -1,4 +1,3 @@
-import logging
 import os
 
 from dotenv import load_dotenv
@@ -8,11 +7,11 @@ from llama_index.core.objects import SQLTableNodeMapping, SQLTableSchema, Object
 from llama_index.llms.openai import OpenAI
 from sqlalchemy import create_engine
 
+from support.Logger import Logger
+
 from auth.OpenAI_Auth import OpenAI_Auth
 
 load_dotenv()
-
-logger = logging.getLogger(__name__)
 
 DB_CONN_STR = os.getenv("DB_CONN")
 PROMPT_RESTRICTIONS = """
@@ -28,6 +27,7 @@ class DBLoader:
 
         OpenAI_Auth()
 
+        self.logger = Logger()
         self.table_contexts = [
             {
                 "table_name": "ar_trimmed",

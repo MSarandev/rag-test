@@ -1,3 +1,5 @@
+import logging
+
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import HTMLResponse, FileResponse
@@ -22,6 +24,9 @@ app.add_middleware(
 
 llm_service = LlmService.LlmService()
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+
 
 @app.get("/", response_class=HTMLResponse)
 async def get_home_page():
@@ -31,6 +36,7 @@ async def get_home_page():
 @app.post("/query")
 def read_item(chat_question: ChatQuestion.ChatQuestion):
     # response = llm_service.handle_docs_input(chat_question.question_text)
-    response = llm_service.handle_db_input(chat_question.question_text)
+    # response = llm_service.handle_db_input(chat_question.question_text)
+    response = llm_service.handle_web_scrape(chat_question.question_text)
 
     return response
