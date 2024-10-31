@@ -1,0 +1,16 @@
+services:
+  rag_db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: rag
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    ports:
+      - 3366:3306
+    volumes:
+      - db:/var/lib/mysql
+
+volumes:
+  db:

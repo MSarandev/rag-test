@@ -7,12 +7,12 @@ from dotenv import load_dotenv
 
 logger = logging.getLogger(__name__)
 load_dotenv()
-API_KEY = os.getenv('API_KEY')
 
 
-class OpenAI:
+class OpenAI_Auth:
     def __init__(self):
-        self.setup_key(API_KEY)
+        self.api_key = os.getenv('API_KEY')
+        self.setup_key(self.api_key)
 
     @staticmethod
     def setup_key(api_key):

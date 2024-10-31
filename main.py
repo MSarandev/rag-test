@@ -30,6 +30,7 @@ async def get_home_page():
 
 @app.post("/query")
 def read_item(chat_question: ChatQuestion.ChatQuestion):
-    response = llm_service.handle_input(chat_question.question_text)
+    # response = llm_service.handle_docs_input(chat_question.question_text)
+    response = llm_service.handle_db_input(chat_question.question_text)
 
     return response
