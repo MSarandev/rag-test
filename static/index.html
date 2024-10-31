@@ -10,6 +10,10 @@
         .spinner-border {
             display: none;
         }
+
+        .ai_message {
+            background-color: azure;
+        }
     </style>
 </head>
 <body>
@@ -23,18 +27,20 @@
                 </div>
                 <div class="card-body">
                     <div class="chat-box" style="height: 400px; overflow-y: scroll;">
-                        <div class="spinner-border text-primary" role="status" id="loading-spinner">
-                            <span class="sr-only">Loading...</span>
-                        </div>
+
                     </div>
                 </div>
                 <div class="card-footer">
+                    <div class="spinner-border text-primary" role="status" id="loading-spinner">
+                        <span class="sr-only">Loading...</span>
+                    </div>
                     <form id="chat-form">
                         <div class="input-group">
                             <input type="text"
                                    class="form-control"
                                    placeholder="Type a message"
                                    aria-label="Type a message"
+                                   autocomplete="off"
                                    id="question_input">
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="submit">Ask</button>
@@ -58,7 +64,7 @@
         const chatBox = document.querySelector('.chat-box');
         const newMessage = document.createElement('div');
 
-        newMessage.classList.add('message');
+        newMessage.classList.add(actor.toLowerCase() + '_message');
         newMessage.innerHTML = `<strong>${actor}:</strong> ${message}`;
 
         chatBox.appendChild(newMessage);

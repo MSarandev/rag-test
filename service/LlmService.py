@@ -32,7 +32,8 @@ class LlmService:
 
     @backoff.on_exception(backoff.expo, openai.RateLimitError, max_tries=MAX_RETRIES)
     def handle_db_input(self, input_request):
-        query_obj = self.db_loader.query_specific_table()
+        # query_obj = self.db_loader.query_specific_table()  # SINGLE TABLE
+        query_obj = self.db_loader.query_globally()  # MULTI TABLE
 
         try:
             result = query_obj.query(input_request)
