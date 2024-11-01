@@ -7,7 +7,7 @@ from llama_index.core import SimpleDirectoryReader, VectorStoreIndex, StorageCon
 from auth.OpenAI_Auth import OpenAI_Auth
 from support.Logger import Logger
 
-DOCS_DIR = os.getenv('DIRECTORY')
+DOCS_DIR = os.getenv('DOCS_DIRECTORY')
 INDEX_STORE_DIR = os.getenv('INDEX_STORE')
 
 
