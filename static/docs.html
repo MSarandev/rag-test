@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG Test page</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .spinner-border {
+            display: none;
+        }
+
+        .ai_message {
+            background-color: azure;
+        }
+
+        #home-btn-group {
+            display: flex;
+            justify-content: start;
+            gap: 10px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: start;
+            gap: 10px;
+        }
+
+        #home-btn {
+            width: 40px;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<!-- Your content here -->
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="button-group" id="home-btn-group">
+                        <button class="btn btn-primary"
+                                onclick="window.location.href='/'"
+                                id="home-btn"><
+                        </button>
+                    </div>
+                    <h1>Docs query</h1>
+                </div>
+                <div class="card-body">
+                    <div class="chat-box" style="height: 400px; overflow-y: scroll;">
+
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="spinner-border text-primary" role="status" id="loading-spinner">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <form id="chat-form">
+                        <div class="input-group">
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="Type a message"
+                                   aria-label="Type a message"
+                                   autocomplete="off"
+                                   id="question_input">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit">Ask</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS, Popper.js, and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!--Custom js -->
+<script>
+    function createResponse(actor, message) {
+        const chatBox = document.querySelector('.chat-box');
+        const newMessage = document.createElement('div');
+
+        newMessage.classList.add(actor.toLowerCase() + '_message');
+        newMessage.innerHTML = `<strong>${actor}:</strong> ${message}`;
+
+        chatBox.appendChild(newMessage);
+        chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
+    }
+
+    document.getElementById('chat-form').addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        const spinner = document.getElementById('loading-spinner');
+        const message = document.getElementById('question_input').value;
+
+        createResponse("You", message);
+        spinner.style.display = 'inline-block'; // Show the spinner
+
+
+        fetch('http://localhost:8000/query/docs', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({"question_text": message})
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Received response (200)');
+
+                createResponse("AI", data.response);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            })
+            .finally(() => {
+                spinner.style.display = 'none'; // Hide the spinner
+            });
+
+        document.getElementById('question_input').value = ''; // Clear the input field
+    });
+</script>
+</body>
+</html>
