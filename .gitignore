@@ -1,2 +1,4 @@
 /.env
 /index_store/
+/.venv/
+/.idea/
